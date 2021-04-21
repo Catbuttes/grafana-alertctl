@@ -27,7 +27,7 @@ var (
 )
 
 func HelpText() {
-	fmt.Println("galertctl - Control Grafana alerts in bulk")
+	fmt.Println("Grafana Alert Control - Control Grafana alerts in bulk")
 
 	flag.PrintDefaults()
 }
@@ -45,6 +45,11 @@ func isFlagPassed(name string) bool {
 func main() {
 	flag.Usage = HelpText
 	flag.Parse()
+
+	if !isFlagPassed("token") {
+		fmt.Println("API Token must be provided")
+		os.Exit(-1)
+	}
 
 	if *save {
 		state := getAlerts()
