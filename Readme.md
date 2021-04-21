@@ -2,6 +2,10 @@
 
 Control your grafana alerts by the command line.
 
+## Installation
+
+Install either by downloading one of the prebuilt binaries or by running `go get github.com/catbuttes/grafana-alertctl`
+
 ## Usage
 
 ```
