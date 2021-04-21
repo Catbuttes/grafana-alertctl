@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -44,6 +45,49 @@ func main() {
 		state := loadState()
 		_ = state
 
+		for _, alert := range state {
+			if *instance != alert.InstanceURL {
+				log.Fatal("Instance doesn't match saved instance")
+			}
+
+			if alert.State == "paused" {
+				setState(alert.ID, true)
+			}
+
+			if alert.State == "ok" || *force {
+				setState(alert.ID, false)
+			}
+
+		}
+
+	}
+
+	if *enable {
+		state := getAlerts()
+
+		for _, alert := range state {
+			if *instance != alert.InstanceURL {
+				log.Fatal("Instance doesn't match saved instance")
+			}
+
+			if alert.State == "ok" || *force {
+				setState(alert.ID, false)
+			}
+		}
+	}
+
+	if *disable {
+		state := getAlerts()
+
+		for _, alert := range state {
+			if *instance != alert.InstanceURL {
+				log.Fatal("Instance doesn't match saved instance")
+			}
+
+			if alert.State == "ok" || *force {
+				setState(alert.ID, true)
+			}
+		}
 	}
 
 }
@@ -89,8 +133,6 @@ func getAlerts() []GAState {
 		GAStateData = append(GAStateData, alertStateData)
 	}
 
-	//fmt.Printf("%+v", GAStateData)
-
 	return GAStateData
 }
 
@@ -123,8 +165,34 @@ func loadState() []GAState {
 	return state
 }
 
-func setState(paused bool) {
+func setState(alertID int, paused bool) {
+	alertsURL := fmt.Sprintf("%s/api/alerts/%d/pause", *instance, alertID)
+	payload := ApiPausedPayload{
+		Paused: paused,
+	}
 
+	payloadData, err := json.Marshal(payload)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	client := &http.Client{
+		Timeout: time.Duration(5) * time.Second,
+	}
+
+	request, err := http.NewRequest("POST", alertsURL, bytes.NewBuffer(payloadData))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	request.Header.Add("Authorization", "Bearer "+*token)
+
+	response, err := client.Do(request)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer response.Body.Close()
 }
 
 type ApiAlertsResponse []struct {
@@ -147,4 +215,8 @@ type GAState struct {
 	ID          int    `json:"id"`
 	State       string `json:"state"`
 	InstanceURL string `json:"instanceurl"`
+}
+
+type ApiPausedPayload struct {
+	Paused bool `json:"paused"`
 }
