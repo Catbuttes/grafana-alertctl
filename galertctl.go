@@ -60,10 +60,12 @@ func main() {
 		state := loadState()
 		_ = state
 
-		for _, alert := range state {
+		for i, alert := range state {
 			if *instance != alert.InstanceURL {
 				log.Fatal("Instance doesn't match saved instance")
 			}
+
+			fmt.Printf("\rUpdating State %d/%d", i+1, len(state))
 
 			if alert.State == "paused" {
 				setState(alert.ID, true)
@@ -75,6 +77,8 @@ func main() {
 
 		}
 
+		fmt.Print("\n")
+
 	}
 
 	if *enable {
@@ -85,15 +89,20 @@ func main() {
 			state = getAlerts()
 		}
 
-		for _, alert := range state {
+		for i, alert := range state {
 			if *instance != alert.InstanceURL {
 				log.Fatal("Instance doesn't match saved instance")
 			}
+
+			fmt.Printf("\rUpdating State %d/%d", i+1, len(state))
 
 			if alert.State == "ok" || alert.State == "unknown" || *force {
 				setState(alert.ID, false)
 			}
 		}
+
+		fmt.Print("\n")
+
 	}
 
 	if *disable {
@@ -104,15 +113,20 @@ func main() {
 			state = getAlerts()
 		}
 
-		for _, alert := range state {
+		for i, alert := range state {
 			if *instance != alert.InstanceURL {
 				log.Fatal("Instance doesn't match saved instance")
 			}
+
+			fmt.Printf("\rUpdating State %d/%d", i+1, len(state))
 
 			if alert.State == "ok" || alert.State == "unknown" || *force {
 				setState(alert.ID, true)
 			}
 		}
+
+		fmt.Print("\n")
+
 	}
 
 }
