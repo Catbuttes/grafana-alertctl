@@ -32,6 +32,16 @@ func HelpText() {
 	flag.PrintDefaults()
 }
 
+func isFlagPassed(name string) bool {
+	found := false
+	flag.Visit(func(f *flag.Flag) {
+		if f.Name == name {
+			found = true
+		}
+	})
+	return found
+}
+
 func main() {
 	flag.Usage = HelpText
 	flag.Parse()
@@ -54,7 +64,7 @@ func main() {
 				setState(alert.ID, true)
 			}
 
-			if alert.State == "ok" || *force {
+			if alert.State == "ok" || alert.State == "unknown" || *force {
 				setState(alert.ID, false)
 			}
 
@@ -64,7 +74,7 @@ func main() {
 
 	if *enable {
 		var state []GAState
-		if *stateFile != "" {
+		if isFlagPassed("stateFile") {
 			state = loadState()
 		} else {
 			state = getAlerts()
@@ -75,7 +85,7 @@ func main() {
 				log.Fatal("Instance doesn't match saved instance")
 			}
 
-			if alert.State == "ok" || *force {
+			if alert.State == "ok" || alert.State == "unknown" || *force {
 				setState(alert.ID, false)
 			}
 		}
@@ -83,7 +93,7 @@ func main() {
 
 	if *disable {
 		var state []GAState
-		if *stateFile != "" {
+		if isFlagPassed("stateFile") {
 			state = loadState()
 		} else {
 			state = getAlerts()
@@ -94,7 +104,7 @@ func main() {
 				log.Fatal("Instance doesn't match saved instance")
 			}
 
-			if alert.State == "ok" || *force {
+			if alert.State == "ok" || alert.State == "unknown" || *force {
 				setState(alert.ID, true)
 			}
 		}
