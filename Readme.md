@@ -29,13 +29,13 @@ Grafana Alert Control - Control Grafana alerts in bulk
 To save your alert settings locally, you can do the following
 
 ```
-galertctl.go -url <your_grafana_instance> -token <your_api_token> -save
+galertctl -url <your_grafana_instance> -token <your_api_token> -save
 ```
 
 To specify where the save file, use 
 
 ```
-galertctl.go -url <your_grafana_instance> -token <your_api_token> -statefile <file> -save
+galertctl -url <your_grafana_instance> -token <your_api_token> -statefile <file> -save
 ```
 
 ### Restoring Saved Alerts
@@ -43,13 +43,13 @@ galertctl.go -url <your_grafana_instance> -token <your_api_token> -statefile <fi
 To restore saved alert settings locally, you can do the following
 
 ```
-galertctl.go -url <your_grafana_instance> -token <your_api_token> -restore
+galertctl -url <your_grafana_instance> -token <your_api_token> -restore
 ```
 
 To specify where the save file to restore, use 
 
 ```
-galertctl.go -url <your_grafana_instance> -token <your_api_token> -statefile <file> -restore
+galertctl -url <your_grafana_instance> -token <your_api_token> -statefile <file> -restore
 ```
 
 ### Disabling Alerts
@@ -57,13 +57,13 @@ galertctl.go -url <your_grafana_instance> -token <your_api_token> -statefile <fi
 To disable alerts in the ok or unknown state (can be combined with the save option) use 
 
 ```
-galertctl.go -url <your_grafana_instance> -token <your_api_token> -disable
+galertctl -url <your_grafana_instance> -token <your_api_token> -disable
 ```
 
 To disregard the alert state and disable even active alerts, add `-force`
 
 ```
-galertctl.go -url <your_grafana_instance> -token <your_api_token> -disable -force
+galertctl -url <your_grafana_instance> -token <your_api_token> -disable -force
 ```
 
 ### Enabling Alerts
@@ -71,5 +71,5 @@ galertctl.go -url <your_grafana_instance> -token <your_api_token> -disable -forc
 To enable alerts use 
 
 ```
-galertctl.go -url <your_grafana_instance> -token <your_api_token> -enable
+galertctl -url <your_grafana_instance> -token <your_api_token> -enable
 ```
