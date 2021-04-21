@@ -63,7 +63,12 @@ func main() {
 	}
 
 	if *enable {
-		state := getAlerts()
+		var state []GAState
+		if *stateFile != "" {
+			state = loadState()
+		} else {
+			state = getAlerts()
+		}
 
 		for _, alert := range state {
 			if *instance != alert.InstanceURL {
@@ -77,7 +82,12 @@ func main() {
 	}
 
 	if *disable {
-		state := getAlerts()
+		var state []GAState
+		if *stateFile != "" {
+			state = loadState()
+		} else {
+			state = getAlerts()
+		}
 
 		for _, alert := range state {
 			if *instance != alert.InstanceURL {
@@ -186,6 +196,8 @@ func setState(alertID int, paused bool) {
 	}
 
 	request.Header.Add("Authorization", "Bearer "+*token)
+	request.Header.Add("Accept", "application/json ")
+	request.Header.Add("Content-Type", "application/json ")
 
 	response, err := client.Do(request)
 	if err != nil {
