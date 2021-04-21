@@ -29,13 +29,13 @@ Grafana Alert Control - Control Grafana alerts in bulk
 To save your alert settings locally, you can do the following
 
 ```
-galertctl -url <your_grafana_instance> -token <your_api_token> -save
+grafana-alertctl -url <your_grafana_instance> -token <your_api_token> -save
 ```
 
 To specify where the save file, use 
 
 ```
-galertctl -url <your_grafana_instance> -token <your_api_token> -statefile <file> -save
+grafana-alertctl -url <your_grafana_instance> -token <your_api_token> -statefile <file> -save
 ```
 
 ### Restoring Saved Alerts
@@ -43,13 +43,13 @@ galertctl -url <your_grafana_instance> -token <your_api_token> -statefile <file>
 To restore saved alert settings locally, you can do the following
 
 ```
-galertctl -url <your_grafana_instance> -token <your_api_token> -restore
+grafana-alertctl -url <your_grafana_instance> -token <your_api_token> -restore
 ```
 
 To specify where the save file to restore, use 
 
 ```
-galertctl -url <your_grafana_instance> -token <your_api_token> -statefile <file> -restore
+grafana-alertctl -url <your_grafana_instance> -token <your_api_token> -statefile <file> -restore
 ```
 
 ### Disabling Alerts
@@ -57,13 +57,13 @@ galertctl -url <your_grafana_instance> -token <your_api_token> -statefile <file>
 To disable alerts in the ok or unknown state (can be combined with the save option) use 
 
 ```
-galertctl -url <your_grafana_instance> -token <your_api_token> -disable
+grafana-alertctl -url <your_grafana_instance> -token <your_api_token> -disable
 ```
 
 To disregard the alert state and disable even active alerts, add `-force`
 
 ```
-galertctl -url <your_grafana_instance> -token <your_api_token> -disable -force
+grafana-alertctl -url <your_grafana_instance> -token <your_api_token> -disable -force
 ```
 
 ### Enabling Alerts
@@ -71,5 +71,5 @@ galertctl -url <your_grafana_instance> -token <your_api_token> -disable -force
 To enable alerts use 
 
 ```
-galertctl -url <your_grafana_instance> -token <your_api_token> -enable
+grafana-alertctl -url <your_grafana_instance> -token <your_api_token> -enable
 ```
